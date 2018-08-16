@@ -1,0 +1,23 @@
+{
+   "data": {
+    "card":  {
+        "name": "America",
+        "expires": "2012-04-23T18:25:43.511Z",
+        "holder_name": "Bruno Guez",
+        "postal_code": "333-545-45"
+    },
+    "contact": {
+        "name": "Bruno Guez",
+        "email": "email@email.com",
+        "number": "7777-777-77"
+    },
+    "address": {
+        "name": "",
+        "state": "",
+        "address_line": "",
+        "zip": "",
+        "city": "",
+        "country": "UA"
+    }
+   }
+}

@@ -212,6 +212,57 @@ func AddCard(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(dat)
 }
 
+func GetBillingInfo(w http.ResponseWriter, r *http.Request) {
+	byt := []byte(`
+	{
+		"data": {
+		 "card":  {
+			 "name": "America",
+			 "expires": "2012-04-23T18:25:43.511Z",
+			 "holder_name": "Bruno Guez",
+			 "postal_code": "333-545-45"
+		 },
+		 "contact": {
+			 "name": "Bruno Guez",
+			 "email": "email@email.com",
+			 "number": "7777-777-77"
+		 },
+		 "address": {
+			 "name": "",
+			 "state": "",
+			 "address_line": "",
+			 "zip": "",
+			 "city": "",
+			 "country": "UA"
+		 }
+		}
+	 }
+	`)
+	var dat map[string]interface{}
+
+	if err := json.Unmarshal(byt, &dat); err != nil {
+		panic(err)
+	}
+
+	Activated = true
+	json.NewEncoder(w).Encode(dat)
+}
+
+func UpdateBillingInfo(w http.ResponseWriter, r *http.Request) {
+	byt := []byte(`
+	{
+	
+	}
+	`)
+	var dat map[string]interface{}
+
+	if err := json.Unmarshal(byt, &dat); err != nil {
+		panic(err)
+	}
+
+	json.NewEncoder(w).Encode(dat)
+}
+
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
 	Use:   "serve",
@@ -240,6 +291,8 @@ to quickly create a Cobra application.`,
 		router.HandleFunc("/api/payments/subscriptions/", GetSubscriptions).Methods("GET")
 		router.HandleFunc("/api/payments/stripe_key/", GetStripeKey).Methods("GET")
 		router.HandleFunc("/api/payments/card/", AddCard).Methods("POST")
+		router.HandleFunc("/api/payments/billing/", GetBillingInfo).Methods("GET")
+		router.HandleFunc("/api/payments/billing/", UpdateBillingInfo).Methods("PATCH")
 		log.Fatal(http.ListenAndServe(":7777", handlers.CORS(allowedHeaders, allowedMethods, allowedOrigins)(router)))
 	},
 }
