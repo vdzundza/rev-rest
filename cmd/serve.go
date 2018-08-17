@@ -18,12 +18,13 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"log"
+	log "log"
 	"net/http"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/spf13/cobra"
+	"github.com/stripe/stripe-go/client"
 )
 
 //var subs = new(Subscriptions)
@@ -263,6 +264,11 @@ func UpdateBillingInfo(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(dat)
 }
 
+func ListInvoices(w http.ResponseWriter, r *http.Request) {
+	sc := &client.API{}
+	// sc.Init("sk_test_kPDzN6RqoH937Y6aCkIuSSF5", nil)
+}
+
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
 	Use:   "serve",
@@ -293,6 +299,7 @@ to quickly create a Cobra application.`,
 		router.HandleFunc("/api/payments/card/", AddCard).Methods("POST")
 		router.HandleFunc("/api/payments/billing/", GetBillingInfo).Methods("GET")
 		router.HandleFunc("/api/payments/billing/", UpdateBillingInfo).Methods("PATCH")
+		router.HandleFunc("/api/payments/billing/history/", ListInvoices).Methods("GET")
 		log.Fatal(http.ListenAndServe(":7777", handlers.CORS(allowedHeaders, allowedMethods, allowedOrigins)(router)))
 	},
 }
