@@ -24,7 +24,6 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/spf13/cobra"
-	"github.com/stripe/stripe-go/client"
 )
 
 //var subs = new(Subscriptions)
@@ -168,6 +167,7 @@ func GetSubscriptions(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("GetSubscriptions called")
 
 	var byt []byte
+	fmt.Println(Activated)
 	if Activated == false {
 		byt = []byte(NoActiveSubs)
 	} else {
@@ -265,8 +265,200 @@ func UpdateBillingInfo(w http.ResponseWriter, r *http.Request) {
 }
 
 func ListInvoices(w http.ResponseWriter, r *http.Request) {
-	sc := &client.API{}
 	// sc.Init("sk_test_kPDzN6RqoH937Y6aCkIuSSF5", nil)
+	byt := []byte(`
+	{
+		"data": [{
+			"date": "2017-10-05T13:46:06Z",
+			"invoice": "Davin",
+			"amount": 758.26,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2017-12-26T12:56:08Z",
+			"invoice": "Skippie",
+			"amount": 1533.46,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-03-29T17:56:50Z",
+			"invoice": "Philly",
+			"amount": 821.5,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2017-09-13T11:19:16Z",
+			"invoice": "Ezra",
+			"amount": 1889.32,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-03-27T18:52:28Z",
+			"invoice": "Vail",
+			"amount": 410.54,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-07-29T11:29:03Z",
+			"invoice": "Clare",
+			"amount": 571.28,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2017-09-11T02:45:37Z",
+			"invoice": "Morissa",
+			"amount": 468.14,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2017-09-20T00:43:36Z",
+			"invoice": "Hewitt",
+			"amount": 652.44,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2017-09-25T22:21:30Z",
+			"invoice": "Carrissa",
+			"amount": 1895.0,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2017-10-07T09:20:56Z",
+			"invoice": "Elva",
+			"amount": 65.76,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2017-11-29T04:46:23Z",
+			"invoice": "Lynnette",
+			"amount": 524.57,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-02-10T19:59:38Z",
+			"invoice": "Emmett",
+			"amount": 329.62,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2017-10-21T12:00:18Z",
+			"invoice": "Janessa",
+			"amount": 928.08,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-04-20T02:02:35Z",
+			"invoice": "Iorgo",
+			"amount": 334.49,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-06-27T02:23:07Z",
+			"invoice": "Robbie",
+			"amount": 1382.74,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-02-11T18:15:34Z",
+			"invoice": "Othelia",
+			"amount": 1586.2,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-01-31T22:48:25Z",
+			"invoice": "Lind",
+			"amount": 1191.64,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-05-31T19:17:51Z",
+			"invoice": "Susette",
+			"amount": 838.81,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-04-25T17:39:30Z",
+			"invoice": "Babbie",
+			"amount": 1570.09,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-03-19T18:36:30Z",
+			"invoice": "Cherie",
+			"amount": 180.28,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-02-25T15:15:05Z",
+			"invoice": "Dawn",
+			"amount": 1116.49,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-05-12T07:52:21Z",
+			"invoice": "Claretta",
+			"amount": 1564.91,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-02-25T07:59:11Z",
+			"invoice": "Dina",
+			"amount": 1558.18,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2017-09-17T02:03:34Z",
+			"invoice": "Maritsa",
+			"amount": 1218.38,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-03-16T16:10:57Z",
+			"invoice": "Mame",
+			"amount": 1020.03,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-04-03T09:01:00Z",
+			"invoice": "Baily",
+			"amount": 615.34,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-04-30T09:42:17Z",
+			"invoice": "Caesar",
+			"amount": 830.42,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-03-22T15:05:39Z",
+			"invoice": "Hetty",
+			"amount": 1548.74,
+			"status": "paid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2018-04-24T10:07:26Z",
+			"invoice": "Caressa",
+			"amount": 86.06,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}, {
+			"date": "2017-11-07T16:41:37Z",
+			"invoice": "Markos",
+			"amount": 246.23,
+			"status": "unpaid",
+			"link": "https://dashboard.stripe.com/emails/receipts/invrc_1D1BDqIeGD42qwSiQKZLqnx3/pdf"
+		}]
+		}
+	`)
+	var dat map[string]interface{}
+
+	if err := json.Unmarshal(byt, &dat); err != nil {
+		panic(err)
+	}
+
+	Activated = true
+	json.NewEncoder(w).Encode(dat)
 }
 
 // serveCmd represents the serve command
@@ -297,9 +489,9 @@ to quickly create a Cobra application.`,
 		router.HandleFunc("/api/payments/subscriptions/", GetSubscriptions).Methods("GET")
 		router.HandleFunc("/api/payments/stripe_key/", GetStripeKey).Methods("GET")
 		router.HandleFunc("/api/payments/card/", AddCard).Methods("POST")
+		router.HandleFunc("/api/payments/billing/history/", ListInvoices).Methods("GET")
 		router.HandleFunc("/api/payments/billing/", GetBillingInfo).Methods("GET")
 		router.HandleFunc("/api/payments/billing/", UpdateBillingInfo).Methods("PATCH")
-		router.HandleFunc("/api/payments/billing/history/", ListInvoices).Methods("GET")
 		log.Fatal(http.ListenAndServe(":7777", handlers.CORS(allowedHeaders, allowedMethods, allowedOrigins)(router)))
 	},
 }
